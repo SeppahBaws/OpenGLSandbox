@@ -15,5 +15,8 @@ public:
 	bool ShouldClose() const;
 
 private:
+	void CenterWindow();
+	
+private:
 	GLFWwindow* m_pGLFWWindow;
 };
