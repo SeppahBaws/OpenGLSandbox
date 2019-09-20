@@ -1,4 +1,5 @@
-#include <iostream>
+// ReSharper Disable Once CppUnusedIncludeDirective
+#include <vld.h>
 
 #include "Application.h"
 

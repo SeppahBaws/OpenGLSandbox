@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <string>
 
+#include "RenderContext.h"
+
 struct GLFWwindow;
 
 class Window
@@ -19,4 +21,5 @@ private:
 	
 private:
 	GLFWwindow* m_pGLFWWindow;
+	RenderContext* m_pRenderContext;
 };

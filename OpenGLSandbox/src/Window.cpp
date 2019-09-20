@@ -1,12 +1,14 @@
 ﻿#include "Window.h"
 
 #include "helpers/Logger.h"
+#include "RenderContext.h"
+#include "Renderer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 Window::Window()
-	: m_pGLFWWindow(nullptr)
+	: m_pGLFWWindow(nullptr), m_pRenderContext(nullptr)
 {
 }
 
@@ -26,32 +28,27 @@ void Window::Initialize(int width, int height, const std::string& title)
 		glfwTerminate();
 		return;
 	}
-
-	glfwMakeContextCurrent(m_pGLFWWindow);
-
-	// Initialize GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		Logger::LogError("Error initializing GLAD!");
-		glfwTerminate();
-		return;
-	}
-
+	
 	CenterWindow();
+
+
+	m_pRenderContext = new RenderContext(m_pGLFWWindow);
+	m_pRenderContext->Init();
 }
 
 void Window::Update()
 {
-	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 
-	glfwSwapBuffers(m_pGLFWWindow);
-
+	m_pRenderContext->SwapBuffers();
+	
 	glfwPollEvents();
 }
 
 void Window::Cleanup()
 {
+	delete m_pRenderContext;
+	
 	glfwTerminate();
 }
 
