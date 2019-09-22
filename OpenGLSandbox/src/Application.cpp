@@ -89,7 +89,8 @@ void Application::Run()
 		color = vec4(v_Color, 1.0);
 	})";
 
-	Shader shader(vertexShader, fragmentShader);
+	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
+	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
 
 	while (!m_pWindow->ShouldClose())
 	{
@@ -100,7 +101,7 @@ void Application::Run()
 		// Renderer::Render(Mesh("res/models/some_object.obj"), object_transform);
 		// Renderer::EndScene();
 		
-		Renderer::Render(VAO, EBO, 6, shader);
+		Renderer::Render(VAO, EBO, 6, pShader);
 		
 		m_pWindow->Update();
 	}

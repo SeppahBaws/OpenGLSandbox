@@ -60,4 +60,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\simpleShader.frag" />
+    <None Include="assets\shaders\simpleShader.vert" />
+  </ItemGroup>
 </Project>

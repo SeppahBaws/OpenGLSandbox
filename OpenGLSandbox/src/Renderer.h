@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <memory>
 
 class Shader;
 
@@ -18,5 +19,5 @@ public:
 	
 	static void Clear(float r, float g, float b, float a);
 
-	static void Render(unsigned int VAO, unsigned int EBO, int count, Shader shader);
+	static void Render(unsigned int VAO, unsigned int EBO, int count, std::shared_ptr<Shader> pShader);
 };

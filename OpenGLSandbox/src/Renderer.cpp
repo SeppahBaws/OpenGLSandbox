@@ -17,9 +17,9 @@ void Renderer::Clear(float r, float g, float b, float a)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Render(unsigned int VAO, unsigned int EBO, int count, Shader shader)
+void Renderer::Render(unsigned int VAO, unsigned int EBO, int count, std::shared_ptr<Shader> pShader)
 {
-	shader.Bind();
+	pShader->Bind();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
