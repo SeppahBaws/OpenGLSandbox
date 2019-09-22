@@ -9,6 +9,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Shader.h"
 
 Application::Application()
 	: m_pWindow(nullptr)
@@ -32,10 +33,11 @@ void Application::Run()
 	Initialize();
 
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
+		 // Position         // Color
+		-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f
 	};
 	unsigned int indices[] = {
 		0, 1, 3,
@@ -54,13 +56,15 @@ void Application::Run()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	
+
 	while (!m_pWindow->ShouldClose())
 	{
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
@@ -70,7 +74,7 @@ void Application::Run()
 		// Renderer::Render(Mesh("res/models/some_object.obj"), object_transform);
 		// Renderer::EndScene();
 		
-		Renderer::Render(VBO, EBO, 6);
+		Renderer::Render(VAO, EBO, 6);
 		
 		m_pWindow->Update();
 	}
