@@ -9,6 +9,9 @@ public:
 	
 	void Run();
 
+public:
+	static void OnError(int error, const char* errorMsg);
+	
 private:
 	void Initialize();
 	void Cleanup();

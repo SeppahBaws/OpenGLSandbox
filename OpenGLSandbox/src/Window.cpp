@@ -12,7 +12,7 @@ Window::Window()
 {
 }
 
-void Window::Initialize(int width, int height, const std::string& title)
+void Window::Initialize(const WindowData& data)
 {
 	// Initialize GLFW
 	if (!glfwInit())
@@ -21,12 +21,29 @@ void Window::Initialize(int width, int height, const std::string& title)
 		return;
 	}
 
-	m_pGLFWWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	glfwWindowHint(GLFW_RESIZABLE, data.resizable);
+
+	m_pGLFWWindow = glfwCreateWindow(data.width, data.height, data.title.c_str(), nullptr, nullptr);
 	if (!m_pGLFWWindow)
 	{
 		Logger::LogError("Error initializing window!");
 		glfwTerminate();
 		return;
+	}
+
+	glfwSetWindowUserPointer(m_pGLFWWindow, this);
+
+	if (data.resizable)
+	{
+		glfwSetWindowSizeCallback(m_pGLFWWindow, [](GLFWwindow* pWindow, int width, int height)
+		{
+			Window* window = (Window*)glfwGetWindowUserPointer(pWindow);
+			window->m_pRenderContext->OnWindowResize(pWindow, width, height);
+		});
 	}
 	
 	CenterWindow();
@@ -38,8 +55,6 @@ void Window::Initialize(int width, int height, const std::string& title)
 
 void Window::Update()
 {
-	Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
-
 	m_pRenderContext->SwapBuffers();
 	
 	glfwPollEvents();

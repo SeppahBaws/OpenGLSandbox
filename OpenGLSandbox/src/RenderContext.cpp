@@ -27,3 +27,8 @@ void RenderContext::SwapBuffers()
 {
 	glfwSwapBuffers(m_pWindowHandle);
 }
+
+void RenderContext::OnWindowResize(GLFWwindow* pWindow, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
