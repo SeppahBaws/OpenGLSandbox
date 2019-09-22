@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+class Shader;
+
 class Renderer
 {
 public:
@@ -16,8 +18,5 @@ public:
 	
 	static void Clear(float r, float g, float b, float a);
 
-	static void Render(unsigned int VAO, unsigned int EBO, int count);
-
-public:
-	static unsigned int s_DemoShader;
+	static void Render(unsigned int VAO, unsigned int EBO, int count, Shader shader);
 };

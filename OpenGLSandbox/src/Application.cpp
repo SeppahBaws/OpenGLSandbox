@@ -6,10 +6,10 @@
 #include "Window.h"
 #include "helpers/Logger.h"
 #include "Renderer.h"
+#include "Shader.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Shader.h"
 
 Application::Application()
 	: m_pWindow(nullptr)
@@ -65,6 +65,32 @@ void Application::Run()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	std::string vertexShader = R"(
+	#version 460 core
+	layout(location = 0) in vec3 a_Position;
+	layout(location = 1) in vec3 a_Color;
+
+	out vec3 v_Color;
+
+	void main()
+	{
+		v_Color = a_Color;
+		gl_Position = vec4(a_Position, 1.0);
+	})";
+
+	std::string fragmentShader = R"(
+	#version 460 core
+	layout(location = 0) out vec4 color;
+
+	in vec3 v_Color;
+
+	void main()
+	{
+		color = vec4(v_Color, 1.0);
+	})";
+
+	Shader shader(vertexShader, fragmentShader);
+
 	while (!m_pWindow->ShouldClose())
 	{
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
@@ -74,7 +100,7 @@ void Application::Run()
 		// Renderer::Render(Mesh("res/models/some_object.obj"), object_transform);
 		// Renderer::EndScene();
 		
-		Renderer::Render(VAO, EBO, 6);
+		Renderer::Render(VAO, EBO, 6, shader);
 		
 		m_pWindow->Update();
 	}
