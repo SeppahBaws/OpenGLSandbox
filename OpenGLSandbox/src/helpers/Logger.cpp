@@ -1,57 +1,13 @@
 #include "Logger.h"
-#include <iostream>
 
-HANDLE Logger::hConsole;
+#include "spdlog/sinks/stdout_color_sinks.h"
 
-/* Init */
+std::shared_ptr<spdlog::logger> Logger::s_Logger;
+
 void Logger::Init()
 {
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-}
+	spdlog::set_pattern("%^[%T.%e] | %-8l | %v%$");
 
-/* Normal Log */
-void Logger::Log(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_DEFAULT);
-}
-
-/* Info */
-void Logger::LogInfo(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_CYAN);
-}
-
-/* Success */
-void Logger::LogSuccess(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_GREEN);
-}
-
-/* Warning */
-void Logger::LogWarning(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_YELLOW);
-}
-
-/* Error */
-void Logger::LogError(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_RED);
-}
-
-/* Fixme */
-void Logger::LogFixme(const std::string& msg)
-{
-	LogColor(msg, LOG_COLOR_PINK);
-}
-
-/*
- * INTERNAL
- */
-
-void Logger::LogColor(const std::string& msg, int color)
-{
-	SetConsoleTextAttribute(hConsole, color);
-	std::cout << msg << std::endl;
-	SetConsoleTextAttribute(hConsole, LOG_COLOR_DEFAULT);
+	s_Logger = spdlog::stdout_color_mt("Logger");
+	s_Logger->set_level(spdlog::level::trace);
 }

@@ -1,7 +1,6 @@
 #include "Shader.h"
 
-#include "helpers/Logger.h"
-#include <sstream>
+#include "helpers/Assert.h"
 #include <fstream>
 
 #include <glad/glad.h>
@@ -12,12 +11,7 @@ Shader::Shader()
 
 void Shader::Bind()
 {
-	// TODO: Replace with an assert
-	if (!m_bInitialized)
-	{
-		Logger::LogError("Shader Not Initialized!");
-		return;
-	}
+	ASSERT(m_bInitialized, "Shader Not Initialized!");
 
 	glUseProgram(m_ProgramId);
 }
@@ -36,6 +30,12 @@ void Shader::InitFromFile(const std::string& vertexFile, const std::string& frag
 	CreateProgram(vertexShader, fragmentShader);
 }
 
+void Shader::SetUniformInt(const std::string& name, int value)
+{
+	int location = glGetUniformLocation(m_ProgramId, name.c_str());
+	glUniform1i(location, value);
+}
+
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 {
 	// Create shader and attach sources
@@ -51,15 +51,13 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 	if (!success)
 	{
 		glGetShaderInfoLog(shaderId, 512, nullptr, infoLog);
-		std::stringstream ss;
-		ss << "Shader Compile Error: " << infoLog;
-		Logger::LogError(ss.str());
+		LOG_ERROR("Shader Compilation Error: {0}", infoLog);
 	}
 
 	return shaderId;
 }
 
-void Shader::CreateProgram(unsigned int  vertexShader, unsigned fragmentShader)
+void Shader::CreateProgram(unsigned int vertexShader, unsigned int fragmentShader)
 {
 	// Create program and attach shaders
 	m_ProgramId = glCreateProgram();
@@ -74,9 +72,7 @@ void Shader::CreateProgram(unsigned int  vertexShader, unsigned fragmentShader)
 	if (!success)
 	{
 		glGetProgramInfoLog(m_ProgramId, 512, nullptr, infoLog);
-		std::stringstream ss;
-		ss << "Shader Link Error: " << infoLog;
-		Logger::LogError(ss.str());
+		LOG_ERROR("Shader Linking Error: {0}", infoLog);
 	}
 
 	glDeleteShader(vertexShader);
@@ -91,9 +87,7 @@ std::string Shader::ReadFile(const std::string& path)
 	std::ifstream in(path, std::ios::in | std::ios::binary);
 	if (!in)
 	{
-		std::stringstream ss;
-		ss << "Shader: Unable to open file '" << path << "'";
-		Logger::LogError(ss.str());
+		LOG_ERROR("Shader: Unable to open file '{0}'", path);
 		return result;
 	}
 

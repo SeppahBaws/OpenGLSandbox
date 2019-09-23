@@ -1,10 +1,8 @@
 ﻿#include "Renderer.h"
 
-#include "helpers/Logger.h"
 #include "Shader.h"
 
 #include <glad/glad.h>
-#include <sstream>
 
 void Renderer::Init(const ViewportData& vp)
 {

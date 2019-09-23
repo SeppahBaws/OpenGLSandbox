@@ -17,7 +17,7 @@ void Window::Initialize(const WindowData& data)
 	// Initialize GLFW
 	if (!glfwInit())
 	{
-		Logger::LogError("Error initializing GLFW!");
+		LOG_ERROR("Error initializing GLFW!");
 		return;
 	}
 
@@ -30,7 +30,7 @@ void Window::Initialize(const WindowData& data)
 	m_pGLFWWindow = glfwCreateWindow(data.width, data.height, data.title.c_str(), nullptr, nullptr);
 	if (!m_pGLFWWindow)
 	{
-		Logger::LogError("Error initializing window!");
+		LOG_ERROR("Error initializing window!");
 		glfwTerminate();
 		return;
 	}

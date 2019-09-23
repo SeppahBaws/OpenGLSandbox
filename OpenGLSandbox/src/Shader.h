@@ -11,7 +11,10 @@ public:
 
 	void InitFromSource(const std::string& vertexSrc, const std::string& fragmentSrc);
 	void InitFromFile(const std::string& vertexFile, const std::string& fragmentFile);
-	
+
+	// Temporary fix, properly implemented in next commit
+	void SetUniformInt(const std::string& name, int value);
+
 private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	void CreateProgram(unsigned int vertexShader, unsigned int fragmentShader);

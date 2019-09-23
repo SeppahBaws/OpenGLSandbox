@@ -16,7 +16,7 @@ void RenderContext::Init()
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		Logger::LogError("RenderContext: Failed to initialize GLAD!");
+		LOG_ERROR("RenderContext: Failed to initialize GLAD!");
 		glfwTerminate();
 
 		return;
