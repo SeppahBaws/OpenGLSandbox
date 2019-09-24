@@ -99,6 +99,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\helpers\Logger.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\RenderContext.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\helpers\Assert.h" />
     <ClInclude Include="src\helpers\Logger.h" />
+    <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\RenderContext.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />

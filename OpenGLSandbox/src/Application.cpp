@@ -6,9 +6,11 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Mesh.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_transform.inl>
 
 Application::Application()
 	: m_pWindow(nullptr)
@@ -40,40 +42,22 @@ void Application::Run()
 
 	// Vertex Data
 	//============
-	float vertices[] = {
-		 // Position         // Texture Coords
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // Bottom Left
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // Bottom Right
-		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // Top Right
-		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // Top Left
+	std::vector<Vertex> vertices = {
+		 // Position           // Texture Coords
+		{{ -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f }}  // Top Left
 	};
-	unsigned int indices[] = {
+	std::vector<uint32_t> indices = {
 		0, 1, 3,
 		1, 2, 3
 	};
 
-	unsigned int VBO, VAO, EBO;
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	// Position Attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// TexCoord Attribute
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	// Mesh Data
+	//==========
+	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>(vertices, indices);
+	glm::mat4 meshTransform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 
 	// Shaders
 	//========
@@ -90,12 +74,13 @@ void Application::Run()
 	{
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 
+		// Example Rendering Loop:
 		// Renderer::BeginScene(Camera());
 		// Renderer::BeginScene(viewProjectionMatrix);
 		// Renderer::Render(Mesh("res/models/some_object.obj"), object_transform);
 		// Renderer::EndScene();
 
-		Renderer::Render(VAO, EBO, 6, pShader);
+		Renderer::Render(pMesh, pShader, meshTransform);
 
 		m_pWindow->Update();
 	}
