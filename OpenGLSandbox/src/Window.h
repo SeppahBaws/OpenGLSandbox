@@ -24,10 +24,14 @@ public:
 
 	bool ShouldClose() const;
 
+	inline int GetWidth() const { return m_WindowData.width; }
+	inline int GetHeight() const { return m_WindowData.height; }
+
 private:
 	void CenterWindow();
 
 private:
 	GLFWwindow* m_pGLFWWindow;
 	RenderContext* m_pRenderContext;
+	WindowData m_WindowData;
 };

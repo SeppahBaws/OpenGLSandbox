@@ -62,7 +62,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Libraries\glm-0.9.9.5;C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,7 +82,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Libraries\glm-0.9.9.5;C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,18 +115,6 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\simpleShader.frag" />
-    <None Include="assets\shaders\simpleShader.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\textures\DemoTexture.tga" />
-    <Image Include="assets\textures\Tiles26\Tiles26_AO.jpg" />
-    <Image Include="assets\textures\Tiles26\Tiles26_col.jpg" />
-    <Image Include="assets\textures\Tiles26\Tiles26_disp.jpg" />
-    <Image Include="assets\textures\Tiles26\Tiles26_nrm.jpg" />
-    <Image Include="assets\textures\Tiles26\Tiles26_rgh.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

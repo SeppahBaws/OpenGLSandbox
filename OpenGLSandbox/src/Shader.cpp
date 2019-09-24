@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader()
 {
@@ -32,8 +33,44 @@ void Shader::InitFromFile(const std::string& vertexFile, const std::string& frag
 
 void Shader::SetUniformInt(const std::string& name, int value)
 {
-	int location = glGetUniformLocation(m_ProgramId, name.c_str());
+	int location = GetUniformLocation(name);
 	glUniform1i(location, value);
+}
+
+void Shader::SetUniformFloat(const std::string& name, float value)
+{
+	int location = GetUniformLocation(name);
+	glUniform1f(location, value);
+}
+
+void Shader::SetUniformFloat2(const std::string& name, const glm::vec2& value)
+{
+	int location = GetUniformLocation(name);
+	glUniform2f(location, value.x, value.y);
+}
+
+void Shader::SetUniformFloat3(const std::string& name, const glm::vec3& value)
+{
+	int location = GetUniformLocation(name);
+	glUniform3f(location, value.x, value.y, value.z);
+}
+
+void Shader::SetUniformFloat4(const std::string& name, const glm::vec4& value)
+{
+	int location = GetUniformLocation(name);
+	glUniform4f(location, value.x, value.y, value.z, value.w);
+}
+
+void Shader::SetUniformMat3(const std::string& name, const glm::mat3& matrix)
+{
+	int location = GetUniformLocation(name);
+	glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
+{
+	int location = GetUniformLocation(name);
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
@@ -99,4 +136,16 @@ std::string Shader::ReadFile(const std::string& path)
 	in.close();
 
 	return result;
+}
+
+int Shader::GetUniformLocation(const std::string& name)
+{
+	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+	{
+		return m_UniformLocationCache[name];
+	}
+
+	int location = glGetUniformLocation(m_ProgramId, name.c_str());
+	m_UniformLocationCache[name] = location;
+	return location;
 }

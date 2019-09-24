@@ -75,26 +75,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\shaders\simpleShader.frag" />
-    <None Include="assets\shaders\simpleShader.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\textures\Tiles26\Tiles26_AO.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\textures\Tiles26\Tiles26_col.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\textures\Tiles26\Tiles26_disp.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\textures\Tiles26\Tiles26_nrm.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\textures\Tiles26\Tiles26_rgh.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\textures\DemoTexture.tga" />
-  </ItemGroup>
 </Project>

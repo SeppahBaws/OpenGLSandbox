@@ -14,6 +14,8 @@ Window::Window()
 
 void Window::Initialize(const WindowData& data)
 {
+	m_WindowData = data;
+	
 	// Initialize GLFW
 	if (!glfwInit())
 	{

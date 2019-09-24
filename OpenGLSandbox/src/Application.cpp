@@ -24,7 +24,7 @@ void Application::Initialize()
 	m_pWindow = new Window();
 	m_pWindow->Initialize({ 1280, 720, "Hello World!", true });
 
-	Renderer::Init({ 0, 0, 1280, 720 });
+	Renderer::Init({ 0, 0, m_pWindow->GetWidth(), m_pWindow->GetHeight() });
 
 	LOG_INFO("--------------------------------");
 	LOG_INFO("OpenGL Info:");
@@ -41,11 +41,11 @@ void Application::Run()
 	// Vertex Data
 	//============
 	float vertices[] = {
-		 // Position         // Color           // Texture Coords
-		-0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Bottom Left
-		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, // Bottom Right
-		 0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f, // Top Right
-		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f,  0.0f, 1.0f  // Top Left
+		 // Position         // Texture Coords
+		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // Bottom Left
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // Bottom Right
+		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // Top Right
+		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // Top Left
 	};
 	unsigned int indices[] = {
 		0, 1, 3,
@@ -65,16 +65,12 @@ void Application::Run()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position Attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// Color Attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
 	// TexCoord Attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -100,7 +96,7 @@ void Application::Run()
 		// Renderer::EndScene();
 
 		Renderer::Render(VAO, EBO, 6, pShader);
-		
+
 		m_pWindow->Update();
 	}
 
