@@ -27,6 +27,8 @@ public:
 	inline int GetWidth() const { return m_WindowData.width; }
 	inline int GetHeight() const { return m_WindowData.height; }
 
+	inline GLFWwindow* GetGLFWWindow() const { return m_pGLFWWindow; }
+
 private:
 	void CenterWindow();
 

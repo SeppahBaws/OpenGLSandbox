@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Mesh.h"
 #include "Time.h"
+#include "Input.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -26,9 +27,11 @@ void Application::Initialize()
 	glfwSetErrorCallback(OnError);
 	
 	m_pWindow = new Window();
-	m_pWindow->Initialize({ 1280, 720, "Hello World!", true });
+	m_pWindow->Initialize({ 1280, 720, "C++ OpenGL Sandbox", true });
 
 	Renderer::Init({ 0, 0, m_pWindow->GetWidth(), m_pWindow->GetHeight() });
+
+	Input::Init(m_pWindow->GetGLFWWindow());
 
 	LOG_INFO("--------------------------------");
 	LOG_INFO("OpenGL Info:");
@@ -61,7 +64,6 @@ void Application::Run()
 	// Mesh Data
 	//==========
 	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>(vertices, indices);
-	glm::mat4 meshTransform = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 
 	// Shaders
 	//========
@@ -73,15 +75,28 @@ void Application::Run()
 	Texture tilesTexture("assets/textures/Tiles26/Tiles26_col.jpg");
 	tilesTexture.Bind();
 	pShader->SetUniformInt("tilesTexture", 0);
+
+	const float moveSpeed = 1.0f;
+	glm::vec3 meshPosition = glm::vec3(0.0f);
 	
 	auto lastTime = Time::GetTime();
 	while (!m_pWindow->ShouldClose())
 	{
 		const auto currentTime = Time::GetTime();
 		Time::Update(lastTime);
-		
+
+		if (Input::IsKeyPressed(KeyCode::KeyA))
+			meshPosition.x -= moveSpeed * Time::GetDeltaTime();
+		if (Input::IsKeyPressed(KeyCode::KeyD))
+			meshPosition.x += moveSpeed * Time::GetDeltaTime();
+		if (Input::IsKeyPressed(KeyCode::KeyW))
+			meshPosition.y += moveSpeed * Time::GetDeltaTime();
+		if (Input::IsKeyPressed(KeyCode::KeyS))
+			meshPosition.y -= moveSpeed * Time::GetDeltaTime();
+
+
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
-		Renderer::Render(pMesh, pShader, meshTransform);
+		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition));
 
 		m_pWindow->Update();
 
