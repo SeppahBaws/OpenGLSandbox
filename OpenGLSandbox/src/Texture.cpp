@@ -1,7 +1,5 @@
-﻿#include "Texture.h"
-
-#include "helpers/Assert.h"
-#include "helpers/Logger.h"
+﻿#include "pch.h"
+#include "Texture.h"
 
 #include "../dependencies/stb_image/stb_image.h"
 #include <glad/glad.h>

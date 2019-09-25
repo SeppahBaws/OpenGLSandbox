@@ -1,6 +1,6 @@
-﻿#include "Window.h"
+﻿#include "pch.h"
+#include "Window.h"
 
-#include "helpers/Logger.h"
 #include "RenderContext.h"
 #include "Renderer.h"
 

@@ -1,8 +1,7 @@
-﻿#include "Application.h"
+﻿#include "pch.h"
+#include "Application.h"
 
 #include <chrono>
-
-#include "helpers/Logger.h"
 
 #include "Window.h"
 #include "Renderer.h"

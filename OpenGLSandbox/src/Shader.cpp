@@ -1,7 +1,5 @@
+#include "pch.h"
 #include "Shader.h"
-
-#include "helpers/Assert.h"
-#include <fstream>
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>

@@ -1,4 +1,5 @@
-﻿#include "Mesh.h"
+﻿#include "pch.h"
+#include "Mesh.h"
 #include <glad/glad.h>
 
 #include "Shader.h"

@@ -1,4 +1,5 @@
-﻿#include "Time.h"
+﻿#include "pch.h"
+#include "Time.h"
 
 float Time::m_DeltaTime = 0.0f;
 std::chrono::high_resolution_clock::time_point Time::m_StartTime;

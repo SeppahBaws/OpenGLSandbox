@@ -1,3 +1,4 @@
+#include "pch.h"
 // ReSharper Disable Once CppUnusedIncludeDirective
 #include <vld.h>
 

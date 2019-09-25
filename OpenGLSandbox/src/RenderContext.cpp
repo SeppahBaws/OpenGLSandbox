@@ -1,6 +1,5 @@
-﻿#include "RenderContext.h"
-
-#include "helpers/Logger.h"
+﻿#include "pch.h"
+#include "RenderContext.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
