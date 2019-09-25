@@ -3,7 +3,7 @@
 #include "helpers/Assert.h"
 #include "helpers/Logger.h"
 
-#include "../dependencies/stb_image.h"
+#include "../dependencies/stb_image/stb_image.h"
 #include <glad/glad.h>
 
 Texture::Texture(const std::string& path)

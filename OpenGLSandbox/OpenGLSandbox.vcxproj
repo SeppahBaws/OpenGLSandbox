@@ -94,8 +94,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dependencies\glad.c" />
-    <ClCompile Include="dependencies\stb_image.cpp" />
+    <ClCompile Include="dependencies\glad\glad.c" />
+    <ClCompile Include="dependencies\stb_image\stb_image.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\helpers\Logger.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -104,10 +104,11 @@
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dependencies\stb_image.h" />
+    <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\helpers\Assert.h" />
     <ClInclude Include="src\helpers\Logger.h" />
@@ -115,7 +116,9 @@
     <ClInclude Include="src\RenderContext.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Singleton.h" />
     <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Time.h" />
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

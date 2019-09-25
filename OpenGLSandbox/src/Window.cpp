@@ -50,9 +50,10 @@ void Window::Initialize(const WindowData& data)
 	
 	CenterWindow();
 
-
 	m_pRenderContext = new RenderContext(m_pGLFWWindow);
 	m_pRenderContext->Init();
+
+	glfwSwapInterval(0);
 }
 
 void Window::Update()

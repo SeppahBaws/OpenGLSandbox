@@ -1,5 +1,7 @@
 ﻿#include "Application.h"
 
+#include <chrono>
+
 #include "helpers/Logger.h"
 
 #include "Window.h"
@@ -7,6 +9,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Mesh.h"
+#include "Time.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -38,6 +41,8 @@ void Application::Initialize()
 
 void Application::Run()
 {
+	auto t = Time::GetTime();
+	
 	Initialize();
 
 	// Vertex Data
@@ -69,20 +74,21 @@ void Application::Run()
 	Texture tilesTexture("assets/textures/Tiles26/Tiles26_col.jpg");
 	tilesTexture.Bind();
 	pShader->SetUniformInt("tilesTexture", 0);
-
+	
+	auto lastTime = Time::GetTime();
 	while (!m_pWindow->ShouldClose())
 	{
+		const auto currentTime = Time::GetTime();
+		Time::Update(lastTime);
+		
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
-
-		// Example Rendering Loop:
-		// Renderer::BeginScene(Camera());
-		// Renderer::BeginScene(viewProjectionMatrix);
-		// Renderer::Render(Mesh("res/models/some_object.obj"), object_transform);
-		// Renderer::EndScene();
-
 		Renderer::Render(pMesh, pShader, meshTransform);
 
 		m_pWindow->Update();
+
+		t = lastTime + std::chrono::milliseconds(m_MsPerFrame);
+		lastTime = currentTime;
+		std::this_thread::sleep_until(t);
 	}
 
 	Cleanup();
