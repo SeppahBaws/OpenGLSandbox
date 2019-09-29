@@ -19,6 +19,13 @@ enum class MouseCode : int
 	ButtonMiddle         = Button3
 };
 
+enum class CursorMode : int
+{
+	Normal               = 0x00034001,
+	Hidden               = 0x00034002,
+	Disabled             = 0x00034003,
+};
+
 enum class KeyCode : int
 {
 	/* The Unknown key */

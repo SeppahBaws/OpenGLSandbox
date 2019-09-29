@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "Camera.h"
 
 class CameraController
@@ -14,7 +13,4 @@ private:
 
 	glm::vec3 m_Position;
 	float m_MoveSpeed;
-
-	float m_Yaw;
-	float m_Pitch;
 };
