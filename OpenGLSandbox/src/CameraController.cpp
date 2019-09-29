@@ -11,10 +11,7 @@ CameraController::CameraController(std::shared_ptr<Camera> pCamera)
 
 void CameraController::Update()
 {
-	float velocity = m_MoveSpeed * Time::GetDeltaTime();
-
-	const float sensitivity = 0.15f;
-	glm::vec2 mouseMovement = Input::GetCursorMovement() * sensitivity;
+	const float moveVelocity = m_MoveSpeed * Time::GetDeltaTime();
 
 	if (Input::IsMouseButtonPressed(MouseCode::ButtonRight))
 	{
@@ -22,25 +19,25 @@ void CameraController::Update()
 
 		// Movement
 		if (Input::IsKeyPressed(KeyCode::KeyW))
-			m_Position += m_pCamera->GetFront() * velocity;
+			m_Position += m_pCamera->GetFront() * moveVelocity;
 		if (Input::IsKeyPressed(KeyCode::KeyS))
-			m_Position -= m_pCamera->GetFront() * velocity;
+			m_Position -= m_pCamera->GetFront() * moveVelocity;
 	
 		if (Input::IsKeyPressed(KeyCode::KeyA))
-			m_Position -= m_pCamera->GetRight() * velocity;
+			m_Position -= m_pCamera->GetRight() * moveVelocity;
 		if (Input::IsKeyPressed(KeyCode::KeyD))
-			m_Position += m_pCamera->GetRight() * velocity;
+			m_Position += m_pCamera->GetRight() * moveVelocity;
 
 		if (Input::IsKeyPressed(KeyCode::KeyE))
-			m_Position += m_pCamera->GetUp() * velocity;
+			m_Position += m_pCamera->GetUp() * moveVelocity;
 		if (Input::IsKeyPressed(KeyCode::KeyQ))
-			m_Position -= m_pCamera->GetUp() * velocity;
+			m_Position -= m_pCamera->GetUp() * moveVelocity;
 
 		// Look
+		const float sensitivity = 0.15f;
+		const glm::vec2 mouseMovement = Input::GetCursorMovement() * sensitivity;
 		m_pCamera->AddYaw(mouseMovement.x);
 		m_pCamera->AddPitch(-mouseMovement.y);
-
-		LOG_TRACE("Mouse Movement: {0}, {1}", mouseMovement.x, mouseMovement.y);
 	}
 
 	if (!Input::IsMouseButtonPressed(MouseCode::ButtonRight))

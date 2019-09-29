@@ -6,10 +6,29 @@
 GLFWwindow* Input::s_pWindow = nullptr;
 bool Input::s_bFirstFrame = true;
 glm::vec2 Input::s_LastMousePosition = glm::vec2(0.0f, 0.0f);
+glm::vec2 Input::s_MouseMovement = glm::vec2(0.0f, 0.0f);
 
 void Input::Init(GLFWwindow* pWindow)
 {
 	s_pWindow = pWindow;
+}
+
+void Input::Update()
+{
+	ASSERT(s_pWindow, "GLFW Window is nullptr");
+
+	if (s_bFirstFrame)
+	{
+		s_bFirstFrame = false;
+		s_LastMousePosition = GetCursorPosition();
+		s_MouseMovement = glm::vec2(0.0f, 0.0f);
+		return;
+	}
+
+	glm::vec2 prevPos = s_LastMousePosition;
+	s_LastMousePosition = GetCursorPosition();
+
+	s_MouseMovement = s_LastMousePosition - prevPos;
 }
 
 bool Input::IsMouseButtonPressed(MouseCode mouseButton)
@@ -40,19 +59,7 @@ glm::vec2 Input::GetCursorPosition()
 
 glm::vec2 Input::GetCursorMovement()
 {
-	ASSERT(s_pWindow, "GLFW Window is nullptr");
-
-	if (s_bFirstFrame)
-	{
-		s_bFirstFrame = false;
-		s_LastMousePosition = GetCursorPosition();
-		return glm::vec2(0.0f, 0.0f);
-	}
-
-	glm::vec2 prevPos = s_LastMousePosition;
-	s_LastMousePosition = GetCursorPosition();
-
-	return s_LastMousePosition - prevPos;
+	return s_MouseMovement;
 }
 
 void Input::SetCursorMode(CursorMode mode)

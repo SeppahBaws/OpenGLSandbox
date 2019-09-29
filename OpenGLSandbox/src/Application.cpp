@@ -51,45 +51,43 @@ void Application::Run()
 
 	// Vertex Data
 	//============
-	// Vertex Data
-	//============
 	std::vector<Vertex> vertices = {
-		// Position           // Texture Coords
-	   // Front Face
-	   {{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-	   {{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-	   {{  0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-	   {{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		// Position               // Texture Coords
+		// Front Face
+		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
 
-	   // Right Face
-	   {{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-	   {{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-	   {{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
-	   {{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		// Right Face
+		{{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
+		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
 
-	   // Top Face
-	   {{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-	   {{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-	   {{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
-	   {{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+		// Top Face
+		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
 
-	   // Back Face
-	   {{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f }}, // Bottom Left
-	   {{ -0.5f, -0.5f,  0.5f}, { 1.0f, 0.0f }}, // Bottom Right
-	   {{ -0.5f,  0.5f,  0.5f}, { 1.0f, 1.0f }}, // Top Right
-	   {{  0.5f,  0.5f,  0.5f}, { 0.0f, 1.0f }}, // Top Left
+		// Back Face
+		{{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{ -0.5f, -0.5f,  0.5f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{ -0.5f,  0.5f,  0.5f}, { 1.0f, 1.0f }}, // Top Right
+		{{  0.5f,  0.5f,  0.5f}, { 0.0f, 1.0f }}, // Top Left
 
-	   // Left Face
-	   {{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-	   {{ -0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-	   {{ -0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-	   {{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+		// Left Face
+		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{ -0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{ -0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
 
-	   // Bottom Face
-	   {{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-	   {{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-	   {{  0.5f, -0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-	   {{ -0.5f, -0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		// Bottom Face
+		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
 	};
 	std::vector<uint32_t> indices = {
 		// Front Face
@@ -143,6 +141,7 @@ void Application::Run()
 	{
 		const auto currentTime = Time::GetTimePoint();
 		Time::Update(lastTime);
+		Input::Update();
 
 		pCameraController->Update();
 		
