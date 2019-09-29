@@ -5,7 +5,8 @@
 class Time : public Singleton<Time>
 {
 public:
-	static std::chrono::steady_clock::time_point GetTime();
+	static std::chrono::steady_clock::time_point GetTimePoint();
+	static float GetTime();
 
 	static float GetDeltaTime();
 	

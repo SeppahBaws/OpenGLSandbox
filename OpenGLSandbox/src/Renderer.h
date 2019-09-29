@@ -4,6 +4,7 @@
 
 class Shader;
 class Mesh;
+class Camera;
 
 class Renderer
 {
@@ -19,6 +20,7 @@ public:
 public:
 	static void Init(const ViewportData& vp);
 	
+	static void BeginScene(const std::shared_ptr<Camera>& pCamera);
 	static void Clear(float r, float g, float b, float a);
 
 	static void Render(std::shared_ptr<Mesh> pMesh, std::shared_ptr<Shader> pShader, const glm::mat4& transform);
