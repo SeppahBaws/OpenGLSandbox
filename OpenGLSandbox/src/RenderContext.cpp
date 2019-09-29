@@ -20,6 +20,8 @@ void RenderContext::Init()
 
 		return;
 	}
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void RenderContext::SwapBuffers()

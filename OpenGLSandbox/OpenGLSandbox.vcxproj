@@ -63,6 +63,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);C:\Libraries\glm-0.9.9.5;C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,6 +84,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);C:\Libraries\glm-0.9.9.5;C:\Libraries\spdlog\include;C:\Libraries\glad-OpenGL-4.6\include;C:\Libraries\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +109,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\helpers\Logger.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -122,6 +126,8 @@
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\CameraController.h" />
     <ClInclude Include="src\helpers\Assert.h" />
     <ClInclude Include="src\helpers\Logger.h" />
     <ClInclude Include="src\Input.h" />

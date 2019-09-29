@@ -10,6 +10,8 @@
 #include "Mesh.h"
 #include "Time.h"
 #include "Input.h"
+#include "Camera.h"
+#include "CameraController.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -43,27 +45,82 @@ void Application::Initialize()
 
 void Application::Run()
 {
-	auto t = Time::GetTime();
+	auto t = Time::GetTimePoint();
 	
 	Initialize();
 
 	// Vertex Data
 	//============
+	// Vertex Data
+	//============
 	std::vector<Vertex> vertices = {
-		 // Position           // Texture Coords
-		{{ -0.5f, -0.5f, 0.0f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f, 0.0f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f, 0.0f }, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f, 0.0f }, { 0.0f, 1.0f }}  // Top Left
+		// Position           // Texture Coords
+	   // Front Face
+	   {{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+	   {{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+	   {{  0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+	   {{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+
+	   // Right Face
+	   {{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+	   {{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+	   {{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
+	   {{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+
+	   // Top Face
+	   {{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+	   {{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+	   {{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
+	   {{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+
+	   // Back Face
+	   {{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f }}, // Bottom Left
+	   {{ -0.5f, -0.5f,  0.5f}, { 1.0f, 0.0f }}, // Bottom Right
+	   {{ -0.5f,  0.5f,  0.5f}, { 1.0f, 1.0f }}, // Top Right
+	   {{  0.5f,  0.5f,  0.5f}, { 0.0f, 1.0f }}, // Top Left
+
+	   // Left Face
+	   {{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+	   {{ -0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+	   {{ -0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+	   {{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+
+	   // Bottom Face
+	   {{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
+	   {{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
+	   {{  0.5f, -0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
+	   {{ -0.5f, -0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
 	};
 	std::vector<uint32_t> indices = {
+		// Front Face
 		0, 1, 3,
-		1, 2, 3
+		1, 2, 3,
+
+		// Right Face
+		4, 5, 7,
+		5, 6, 7,
+
+		// Top Face
+		8, 9, 11,
+		9, 10, 11,
+
+		// Back Face
+		12, 13, 15,
+		13, 14, 15,
+
+		// Left Face
+		16, 17, 19,
+		17, 18, 19,
+
+		// Bottom Face
+		20, 21, 23,
+		21, 22, 23
 	};
 
 	// Mesh Data
 	//==========
 	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>(vertices, indices);
+	glm::vec3 meshPosition = glm::vec3(0.0f);
 
 	// Shaders
 	//========
@@ -76,25 +133,20 @@ void Application::Run()
 	tilesTexture.Bind();
 	pShader->SetUniformInt("tilesTexture", 0);
 
-	const float moveSpeed = 1.0f;
-	glm::vec3 meshPosition = glm::vec3(0.0f);
+	// Camera
+	//=======
+	std::shared_ptr<Camera> pCamera = std::make_shared<Camera>(90, m_pWindow->GetAspectRatio(), 0.1f, 1000.0f);
+	std::shared_ptr<CameraController> pCameraController = std::make_shared<CameraController>(pCamera);
 	
-	auto lastTime = Time::GetTime();
+	auto lastTime = Time::GetTimePoint();
 	while (!m_pWindow->ShouldClose())
 	{
-		const auto currentTime = Time::GetTime();
+		const auto currentTime = Time::GetTimePoint();
 		Time::Update(lastTime);
 
-		if (Input::IsKeyPressed(KeyCode::KeyA))
-			meshPosition.x -= moveSpeed * Time::GetDeltaTime();
-		if (Input::IsKeyPressed(KeyCode::KeyD))
-			meshPosition.x += moveSpeed * Time::GetDeltaTime();
-		if (Input::IsKeyPressed(KeyCode::KeyW))
-			meshPosition.y += moveSpeed * Time::GetDeltaTime();
-		if (Input::IsKeyPressed(KeyCode::KeyS))
-			meshPosition.y -= moveSpeed * Time::GetDeltaTime();
-
-
+		pCameraController->Update();
+		
+		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition));
 

@@ -26,6 +26,7 @@ public:
 
 	inline int GetWidth() const { return m_WindowData.width; }
 	inline int GetHeight() const { return m_WindowData.height; }
+	inline float GetAspectRatio() const { return float(m_WindowData.width) / float(m_WindowData.height); }
 
 	inline GLFWwindow* GetGLFWWindow() const { return m_pGLFWWindow; }
 
