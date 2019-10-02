@@ -17,6 +17,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.inl>
 
+#include "dependencies/imgui/imgui.h"
+#include "dependencies/imgui/imgui_impl_glfw.h"
+#include "dependencies/imgui/imgui_impl_opengl3.h"
+
 Application::Application()
 	: m_pWindow(nullptr)
 {
@@ -34,6 +38,24 @@ void Application::Initialize()
 	Renderer::Init({ 0, 0, m_pWindow->GetWidth(), m_pWindow->GetHeight() });
 
 	Input::Init(m_pWindow->GetGLFWWindow());
+
+	// ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;		// Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;			// Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;			// Enable Multi-Viewports / Platform Windows
+
+	ImGui::StyleColorsDark();
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+	ImGui_ImplGlfw_InitForOpenGL(m_pWindow->GetGLFWWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 460");
 
 	LOG_INFO("--------------------------------");
 	LOG_INFO("OpenGL Info:");
@@ -135,7 +157,7 @@ void Application::Run()
 	//=======
 	std::shared_ptr<Camera> pCamera = std::make_shared<Camera>(90, m_pWindow->GetAspectRatio(), 0.1f, 1000.0f);
 	std::shared_ptr<CameraController> pCameraController = std::make_shared<CameraController>(pCamera);
-	
+
 	auto lastTime = Time::GetTimePoint();
 	while (!m_pWindow->ShouldClose())
 	{
@@ -143,12 +165,39 @@ void Application::Run()
 		Time::Update(lastTime);
 		Input::Update();
 
+		// ImGui New Frame
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
 		pCameraController->Update();
 		
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition));
 
+		ImGui::ShowDemoWindow();
+		
+		if (ImGui::Begin("First window!"))
+		{
+			ImGui::Text("Hello World!");
+		}
+		ImGui::End();
+
+		// ImGui Render
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
+
+		// Swap buffers etc
 		m_pWindow->Update();
 
 		t = lastTime + std::chrono::milliseconds(m_MsPerFrame);
@@ -166,6 +215,10 @@ void Application::OnError(int error, const char* errorMsg)
 
 void Application::Cleanup()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	
 	m_pWindow->Cleanup();
 	delete m_pWindow;
 }

@@ -44,7 +44,6 @@ void Renderer::Clear(float r, float g, float b, float a)
 void Renderer::Render(std::shared_ptr<Mesh> pMesh, std::shared_ptr<Shader> pShader, const glm::mat4& transform)
 {
 	pShader->Bind();
-	pShader->Bind();
 	pShader->SetUniformMat4("u_Model", transform);
 	pShader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 	
