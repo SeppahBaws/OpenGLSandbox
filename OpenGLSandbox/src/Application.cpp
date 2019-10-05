@@ -83,96 +83,19 @@ void Application::Run()
 	glm::vec3 modelScale = glm::vec3(1.0f);
 
 	std::shared_ptr<Model> pCube = std::make_shared<Model>("assets/models/default-shapes/cube.fbx");
-	const glm::vec3 cubePos = glm::vec3(1.0f, 0.0f, 0.0f);
+	const glm::vec3 cubePos = glm::vec3(2.0f, 0.0f, 0.0f);
 	
-	/*
+	// Textures
+	//=========
+	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
+	Texture tilesAlbedo("assets/textures/Tiles26/Tiles26_col.jpg");
 	
-	// Vertex Data
-	//============
-	std::vector<Vertex> vertices = {
-		// Position               // Normal             // Texture Coords
-		// Front Face
-		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 0.0f, 1.0f }}, // Top Left
-
-		// Right Face
-		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 0.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
-
-		// Top Face
-		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
-
-		// Back Face
-		{{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{ -0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{ -0.5f,  0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{  0.5f,  0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 0.0f, 1.0f }}, // Top Left
-
-		// Left Face
-		{{ -0.5f, -0.5f,  0.5f }, { -1.0f, 0.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{ -0.5f, -0.5f, -0.5f }, { -1.0f, 0.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{ -0.5f,  0.5f, -0.5f }, { -1.0f, 0.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f,  0.5f }, { -1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
-
-		// Bottom Face
-		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, -1.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f,  0.5f }, { 0.0f, -1.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f, -0.5f, -0.5f }, { 0.0f, -1.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, -1.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
-	};
-	std::vector<uint32_t> indices = {
-		// Front Face
-		0, 1, 3,
-		1, 2, 3,
-
-		// Right Face
-		4, 5, 7,
-		5, 6, 7,
-
-		// Top Face
-		8, 9, 11,
-		9, 10, 11,
-
-		// Back Face
-		12, 13, 15,
-		13, 14, 15,
-
-		// Left Face
-		16, 17, 19,
-		17, 18, 19,
-
-		// Bottom Face
-		20, 21, 23,
-		21, 22, 23
-	};
-
-	// Mesh Data
-	//==========
-	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>(vertices, indices);
-	glm::vec3 meshPosition = glm::vec3(0.0f);
-	glm::vec3 meshRotation = glm::vec3(0.0f);
-	glm::vec3 meshScale = glm::vec3(1.0f);
-
-	*/
-
 	// Shaders
 	//========
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
 	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
+	pShader->SetUniformInt("albedo", 0); // albedo texture slot -> The texture bound to target 0 will be used for albedo.
 
-	// Textures
-	//=========
-	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
-	pistolAlbedo.Bind(0);
-	pShader->SetUniformInt("albedo", 0);
-	
 	// Camera
 	//=======
 	std::shared_ptr<Camera> pCamera = std::make_shared<Camera>(90, m_pWindow->GetAspectRatio(), 0.1f, 1000.0f);
@@ -194,25 +117,24 @@ void Application::Run()
 
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
-		/*
-		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition) *
-			glm::orientate4(glm::vec3(glm::radians(meshRotation))) *
-			glm::scale(glm::mat4(1.0f), meshScale));
-		*/
 		
+		// Draw Pistol
+		pistolAlbedo.Bind(0);
 		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
 			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
 			glm::scale(glm::mat4(1.0f), modelScale));
 
-		// Renderer::Render(pCube, pShader, glm::translate(glm::mat4(1.0f), cubePos));
+		// Draw Cube
+		tilesAlbedo.Bind(0);
+		Renderer::Render(pCube, pShader, glm::translate(glm::mat4(1.0f), cubePos));
 
 		ImGui::ShowDemoWindow();
 
 		ImGuiIO& io = ImGui::GetIO();
 
 		static int renderMode = GL_FILL;
-		static float pointSize = 2.0f;
-		static float lineWidth = 2.0f;
+		static int pointSize = 2;
+		static int lineWidth = 2;
 		if (ImGui::Begin("Rendering Settings"))
 		{
 			ImGui::RadioButton("Fill", &renderMode, GL_FILL);
@@ -221,13 +143,13 @@ void Application::Run()
 
 			ImGui::Separator();
 
-			ImGui::SliderFloat("Point size", &pointSize, 1.0f, 10.0f);
-			ImGui::SliderFloat("Line width", &lineWidth, 1.0f, 10.0f);
+			ImGui::SliderInt("Point size", &pointSize, 1, 10);
+			ImGui::SliderInt("Line width", &lineWidth, 1, 10);
 		}
 		ImGui::End();
 		glPolygonMode(GL_FRONT_AND_BACK, renderMode);
-		glPointSize(pointSize);
-		glLineWidth(lineWidth);
+		glPointSize(float(pointSize));
+		glLineWidth(float(lineWidth));
 
 		if (ImGui::Begin("Custom Model Properties"))
 		{

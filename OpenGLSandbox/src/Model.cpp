@@ -14,9 +14,9 @@ void Model::LoadMesh(const std::string& path)
 {
 	Assimp::Importer importer;
 
-	const aiScene* pScene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-		// aiProcess_CalcTangentSpace | aiProcess_Triangulate |
-		// aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+	const aiScene* pScene = importer.ReadFile(path, aiProcess_Triangulate |
+		aiProcess_CalcTangentSpace | aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
 
 	if (!pScene || pScene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !pScene->mRootNode)
 	{

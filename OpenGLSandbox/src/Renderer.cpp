@@ -70,5 +70,6 @@ void Renderer::Render(std::shared_ptr<Model> pModel, std::shared_ptr<Shader> pSh
 		
 		mesh.Bind();
 		glDrawElements(GL_TRIANGLES, mesh.GetIndexCount(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 	}
 }
