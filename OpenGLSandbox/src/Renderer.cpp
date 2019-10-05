@@ -3,8 +3,9 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Shader.h"
 #include "Mesh.h"
+#include "Model.h"
+#include "Shader.h"
 #include "Camera.h"
 
 glm::mat4 Renderer::s_ViewProjectionMatrix;
@@ -50,4 +51,24 @@ void Renderer::Render(std::shared_ptr<Mesh> pMesh, std::shared_ptr<Shader> pShad
 	pMesh->Bind();
 
 	glDrawElements(GL_TRIANGLES, pMesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::Render(std::shared_ptr<Model> pModel, std::shared_ptr<Shader> pShader, const glm::mat4& transform)
+{
+	// pShader->Bind();
+	// pShader->SetUniformMat4("u_Model", transform);
+	// pShader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
+	//
+	// pModel->GetMeshes()[0].Bind();
+	// glDrawElements(GL_TRIANGLES, pModel->GetMeshes()[0].GetIndexCount(), GL_UNSIGNED_INT, 0);
+	
+	for (Mesh& mesh : pModel->GetMeshes())
+	{
+		pShader->Bind();
+		pShader->SetUniformMat4("u_Model", transform);
+		pShader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
+		
+		mesh.Bind();
+		glDrawElements(GL_TRIANGLES, mesh.GetIndexCount(), GL_UNSIGNED_INT, 0);
+	}
 }

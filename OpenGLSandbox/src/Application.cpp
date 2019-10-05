@@ -12,10 +12,13 @@
 #include "Input.h"
 #include "Camera.h"
 #include "CameraController.h"
+#include "Model.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/ext/matrix_transform.inl>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 #include "dependencies/imgui/imgui.h"
 #include "dependencies/imgui/imgui_impl_glfw.h"
@@ -71,45 +74,58 @@ void Application::Run()
 	
 	Initialize();
 
+	// Model Test
+	//============
+	std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
+	// std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/default-shapes/uv-sphere.fbx");
+	glm::vec3 modelPosition = glm::vec3(0.0f);
+	glm::vec3 modelRotation = glm::vec3(0.0f);
+	glm::vec3 modelScale = glm::vec3(1.0f);
+
+	std::shared_ptr<Model> pCube = std::make_shared<Model>("assets/models/default-shapes/cube.fbx");
+	const glm::vec3 cubePos = glm::vec3(1.0f, 0.0f, 0.0f);
+	
+	/*
+	
 	// Vertex Data
 	//============
 	std::vector<Vertex> vertices = {
-		// Position               // Texture Coords
+		// Position               // Normal             // Texture Coords
 		// Front Face
-		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f, -1.0f}, { 0.0f, 1.0f }}, // Top Left
 
 		// Right Face
-		{{  0.5f, -0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
-		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 0.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
 
 		// Top Face
-		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f,  0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f,  0.5f,  0.5f }, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+		{{ -0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f,  0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
 
 		// Back Face
-		{{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f }}, // Bottom Left
-		{{ -0.5f, -0.5f,  0.5f}, { 1.0f, 0.0f }}, // Bottom Right
-		{{ -0.5f,  0.5f,  0.5f}, { 1.0f, 1.0f }}, // Top Right
-		{{  0.5f,  0.5f,  0.5f}, { 0.0f, 1.0f }}, // Top Left
+		{{  0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{ -0.5f, -0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{ -0.5f,  0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{  0.5f,  0.5f,  0.5f}, { 0.0f, 0.0f, 1.0f}, { 0.0f, 1.0f }}, // Top Left
 
 		// Left Face
-		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{ -0.5f, -0.5f, -0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{ -0.5f,  0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f,  0.5f,  0.5f }, { 0.0f, 1.0f }}, // Top Left
+		{{ -0.5f, -0.5f,  0.5f }, { -1.0f, 0.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{ -0.5f, -0.5f, -0.5f }, { -1.0f, 0.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{ -0.5f,  0.5f, -0.5f }, { -1.0f, 0.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f,  0.5f,  0.5f }, { -1.0f, 0.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
 
 		// Bottom Face
-		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, 0.0f }}, // Bottom Left
-		{{  0.5f, -0.5f,  0.5f }, { 1.0f, 0.0f }}, // Bottom Right
-		{{  0.5f, -0.5f, -0.5f }, { 1.0f, 1.0f }}, // Top Right
-		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, 1.0f }}, // Top Left
+		{{ -0.5f, -0.5f,  0.5f }, { 0.0f, -1.0f, 0.0f}, { 0.0f, 0.0f }}, // Bottom Left
+		{{  0.5f, -0.5f,  0.5f }, { 0.0f, -1.0f, 0.0f}, { 1.0f, 0.0f }}, // Bottom Right
+		{{  0.5f, -0.5f, -0.5f }, { 0.0f, -1.0f, 0.0f}, { 1.0f, 1.0f }}, // Top Right
+		{{ -0.5f, -0.5f, -0.5f }, { 0.0f, -1.0f, 0.0f}, { 0.0f, 1.0f }}, // Top Left
 	};
 	std::vector<uint32_t> indices = {
 		// Front Face
@@ -141,6 +157,10 @@ void Application::Run()
 	//==========
 	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>(vertices, indices);
 	glm::vec3 meshPosition = glm::vec3(0.0f);
+	glm::vec3 meshRotation = glm::vec3(0.0f);
+	glm::vec3 meshScale = glm::vec3(1.0f);
+
+	*/
 
 	// Shaders
 	//========
@@ -149,15 +169,15 @@ void Application::Run()
 
 	// Textures
 	//=========
-	Texture tilesTexture("assets/textures/Tiles26/Tiles26_col.jpg");
-	tilesTexture.Bind();
-	pShader->SetUniformInt("tilesTexture", 0);
-
+	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
+	pistolAlbedo.Bind(0);
+	pShader->SetUniformInt("albedo", 0);
+	
 	// Camera
 	//=======
 	std::shared_ptr<Camera> pCamera = std::make_shared<Camera>(90, m_pWindow->GetAspectRatio(), 0.1f, 1000.0f);
 	std::shared_ptr<CameraController> pCameraController = std::make_shared<CameraController>(pCamera);
-
+	
 	auto lastTime = Time::GetTimePoint();
 	while (!m_pWindow->ShouldClose())
 	{
@@ -171,16 +191,86 @@ void Application::Run()
 		ImGui::NewFrame();
 
 		pCameraController->Update();
-		
+
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
-		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition));
+		/*
+		Renderer::Render(pMesh, pShader, glm::translate(glm::mat4(1.0f), meshPosition) *
+			glm::orientate4(glm::vec3(glm::radians(meshRotation))) *
+			glm::scale(glm::mat4(1.0f), meshScale));
+		*/
+		
+		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
+			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
+			glm::scale(glm::mat4(1.0f), modelScale));
+
+		// Renderer::Render(pCube, pShader, glm::translate(glm::mat4(1.0f), cubePos));
 
 		ImGui::ShowDemoWindow();
-		
-		if (ImGui::Begin("First window!"))
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		static int renderMode = GL_FILL;
+		static float pointSize = 2.0f;
+		static float lineWidth = 2.0f;
+		if (ImGui::Begin("Rendering Settings"))
 		{
-			ImGui::Text("Hello World!");
+			ImGui::RadioButton("Fill", &renderMode, GL_FILL);
+			ImGui::RadioButton("Line", &renderMode, GL_LINE);
+			ImGui::RadioButton("Point", &renderMode, GL_POINT);
+
+			ImGui::Separator();
+
+			ImGui::SliderFloat("Point size", &pointSize, 1.0f, 10.0f);
+			ImGui::SliderFloat("Line width", &lineWidth, 1.0f, 10.0f);
+		}
+		ImGui::End();
+		glPolygonMode(GL_FRONT_AND_BACK, renderMode);
+		glPointSize(pointSize);
+		glLineWidth(lineWidth);
+
+		if (ImGui::Begin("Custom Model Properties"))
+		{
+			ImGui::Text("Transform");
+			ImGui::InputFloat3("Position", glm::value_ptr(modelPosition));
+			ImGui::InputFloat3("Rotation", glm::value_ptr(modelRotation));
+			ImGui::InputFloat3("Scale", glm::value_ptr(modelScale));
+		}
+		ImGui::End();
+
+		/*
+		if (ImGui::Begin("Object Properties"))
+		{
+			ImGui::Text("Transform");
+			ImGui::InputFloat3("Position", glm::value_ptr(meshPosition));
+			ImGui::InputFloat3("Rotation", glm::value_ptr(meshRotation));
+			ImGui::InputFloat3("Scale", glm::value_ptr(meshScale));
+
+			// ImGui::Separator();
+			//
+			// ImGui::Text("Material");
+			// if (ImGui::Button("Reload Shaders"))
+			// {
+			// 	LOG_WARN("Reloading Shaders!");
+			// 	LOG_ERROR("Shader Reloading not implemented yet.");
+			// }
+		}
+		ImGui::End();
+		*/
+
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImVec2 window_pos = ImVec2(viewport->Pos.x + 10.0f, viewport->Pos.y + 10.0f);
+		ImVec2 window_pos_pivot = ImVec2(0.0f, 0.0f);
+		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::SetNextWindowBgAlpha(0.35f);
+		if (ImGui::Begin("Statistics", 0, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+		{
+			ImGui::Text("Application Statistics");
+			ImGui::Separator();
+			ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::Text("DeltaTime: %.3f ms", Time::GetDeltaTime() * 1000.0f);
 		}
 		ImGui::End();
 
@@ -188,7 +278,6 @@ void Application::Run()
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		ImGuiIO& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();

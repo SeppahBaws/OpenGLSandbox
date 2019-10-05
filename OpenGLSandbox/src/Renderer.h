@@ -2,8 +2,9 @@
 #include <memory>
 #include <glm/glm.hpp>
 
-class Shader;
 class Mesh;
+class Model;
+class Shader;
 class Camera;
 
 class Renderer
@@ -24,6 +25,7 @@ public:
 	static void Clear(float r, float g, float b, float a);
 
 	static void Render(std::shared_ptr<Mesh> pMesh, std::shared_ptr<Shader> pShader, const glm::mat4& transform);
+	static void Render(std::shared_ptr<Model> pModel, std::shared_ptr<Shader> pShader, const glm::mat4& transform);
 
 private:
 	// TODO: This must get set by the camera!

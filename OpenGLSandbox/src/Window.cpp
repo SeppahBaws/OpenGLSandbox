@@ -53,7 +53,7 @@ void Window::Initialize(const WindowData& data)
 	m_pRenderContext = new RenderContext(m_pGLFWWindow);
 	m_pRenderContext->Init();
 
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
 }
 
 void Window::Update()
