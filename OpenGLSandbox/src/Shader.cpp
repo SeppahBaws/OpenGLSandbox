@@ -4,8 +4,9 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
-Shader::Shader()
+Shader::~Shader()
 {
+	glDeleteProgram(m_ProgramId);
 }
 
 void Shader::Bind()
@@ -15,8 +16,30 @@ void Shader::Bind()
 	glUseProgram(m_ProgramId);
 }
 
+void Shader::Reload()
+{
+	// TODO: add ability to reload from source string?
+	ASSERT(m_bFromFile, "Cannot reload shaders that aren't stored in a separate file!");
+
+	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, ReadFile(m_ShaderSources.first));
+	unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, ReadFile(m_ShaderSources.second));
+
+	unsigned int reloadedProgram = CreateProgram(vertexShader, fragmentShader);
+
+	if (reloadedProgram)
+	{
+		glDeleteProgram(m_ProgramId);
+		m_ProgramId = reloadedProgram;
+	}
+
+	// Clear the Uniform Location Cache, as this shader is now a new program, and the locations are invalid now.
+	m_UniformLocationCache.clear();
+}
+
 void Shader::InitFromSource(const std::string& vertexSrc, const std::string& fragmentSrc)
 {
+	m_bFromFile = false;
+	
 	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrc);
 	unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrc);
 	CreateProgram(vertexShader, fragmentShader);
@@ -24,9 +47,13 @@ void Shader::InitFromSource(const std::string& vertexSrc, const std::string& fra
 
 void Shader::InitFromFile(const std::string& vertexFile, const std::string& fragmentFile)
 {
-	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, ReadFile(vertexFile));
-	unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, ReadFile(fragmentFile));
-	CreateProgram(vertexShader, fragmentShader);
+	m_bFromFile = true;
+	m_ShaderSources.first = vertexFile;
+	m_ShaderSources.second = fragmentFile;
+	
+	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, ReadFile(m_ShaderSources.first));
+	unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, ReadFile(m_ShaderSources.second));
+	m_ProgramId = CreateProgram(vertexShader, fragmentShader);
 }
 
 void Shader::SetUniformInt(const std::string& name, int value)
@@ -92,21 +119,21 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 	return shaderId;
 }
 
-void Shader::CreateProgram(unsigned int vertexShader, unsigned int fragmentShader)
+unsigned int Shader::CreateProgram(unsigned int vertexShader, unsigned int fragmentShader)
 {
 	// Create program and attach shaders
-	m_ProgramId = glCreateProgram();
-	glAttachShader(m_ProgramId, vertexShader);
-	glAttachShader(m_ProgramId, fragmentShader);
-	glLinkProgram(m_ProgramId);
+	unsigned int program = glCreateProgram();
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
+	glLinkProgram(program);
 
 	// Get linking status
 	int success;
 	char infoLog[512];
-	glGetProgramiv(m_ProgramId, GL_LINK_STATUS, &success);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success)
 	{
-		glGetProgramInfoLog(m_ProgramId, 512, nullptr, infoLog);
+		glGetProgramInfoLog(program, 512, nullptr, infoLog);
 		LOG_ERROR("Shader Linking Error: {0}", infoLog);
 	}
 
@@ -114,6 +141,8 @@ void Shader::CreateProgram(unsigned int vertexShader, unsigned int fragmentShade
 	glDeleteShader(fragmentShader);
 
 	m_bInitialized = true;
+	// LOG_INFO("Shader program id: {0}", program);
+	return program;
 }
 
 std::string Shader::ReadFile(const std::string& path)

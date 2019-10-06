@@ -5,9 +5,14 @@ in vec3 v_Normal;
 in vec2 v_TexCoord;
 
 uniform sampler2D albedo;
+uniform sampler2D roughness;
 
 void main()
 {
-    color = texture(albedo, v_TexCoord);
-    // color = vec4(1.0);
+    vec3 finalColor = vec3(1.0);
+
+    vec3 albedoColor = texture(albedo, v_TexCoord).rgb;
+    
+    finalColor = albedoColor;
+    color = vec4(finalColor, 1.0);
 }

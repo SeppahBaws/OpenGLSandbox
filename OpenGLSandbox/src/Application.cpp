@@ -77,24 +77,19 @@ void Application::Run()
 	// Model Test
 	//============
 	std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
-	// std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/default-shapes/uv-sphere.fbx");
 	glm::vec3 modelPosition = glm::vec3(0.0f);
 	glm::vec3 modelRotation = glm::vec3(0.0f);
 	glm::vec3 modelScale = glm::vec3(1.0f);
 
-	std::shared_ptr<Model> pCube = std::make_shared<Model>("assets/models/default-shapes/cube.fbx");
-	const glm::vec3 cubePos = glm::vec3(2.0f, 0.0f, 0.0f);
-	
 	// Textures
 	//=========
 	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
-	Texture tilesAlbedo("assets/textures/Tiles26/Tiles26_col.jpg");
+	Texture pistolRoughness("assets/models/drakefire-pistol/textures/base_roughness.jpg");
 	
 	// Shaders
 	//========
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
 	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
-	pShader->SetUniformInt("albedo", 0); // albedo texture slot -> The texture bound to target 0 will be used for albedo.
 
 	// Camera
 	//=======
@@ -117,16 +112,16 @@ void Application::Run()
 
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
+
+		pShader->SetUniformInt("albedo", 0);
+		pShader->SetUniformInt("roughness", 1);
 		
 		// Draw Pistol
 		pistolAlbedo.Bind(0);
+		pistolRoughness.Bind(1);
 		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
 			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
 			glm::scale(glm::mat4(1.0f), modelScale));
-
-		// Draw Cube
-		tilesAlbedo.Bind(0);
-		Renderer::Render(pCube, pShader, glm::translate(glm::mat4(1.0f), cubePos));
 
 		ImGui::ShowDemoWindow();
 
@@ -137,14 +132,14 @@ void Application::Run()
 		static int lineWidth = 2;
 		if (ImGui::Begin("Rendering Settings"))
 		{
-			ImGui::RadioButton("Fill", &renderMode, GL_FILL);
-			ImGui::RadioButton("Line", &renderMode, GL_LINE);
-			ImGui::RadioButton("Point", &renderMode, GL_POINT);
+			ImGui::RadioButton("Filled", &renderMode, GL_FILL);
+			ImGui::RadioButton("Wire frame", &renderMode, GL_LINE);
+			ImGui::RadioButton("Points", &renderMode, GL_POINT);
 
 			ImGui::Separator();
 
+			ImGui::SliderInt("Wire frame width", &lineWidth, 1, 10);
 			ImGui::SliderInt("Point size", &pointSize, 1, 10);
-			ImGui::SliderInt("Line width", &lineWidth, 1, 10);
 		}
 		ImGui::End();
 		glPolygonMode(GL_FRONT_AND_BACK, renderMode);
@@ -157,28 +152,17 @@ void Application::Run()
 			ImGui::InputFloat3("Position", glm::value_ptr(modelPosition));
 			ImGui::InputFloat3("Rotation", glm::value_ptr(modelRotation));
 			ImGui::InputFloat3("Scale", glm::value_ptr(modelScale));
+
+			ImGui::Separator();
+
+			ImGui::Text("Material");
+			if (ImGui::Button("Reload Shader"))
+			{
+				LOG_WARN("Reloading Shaders...");
+				pShader->Reload();
+			}
 		}
 		ImGui::End();
-
-		/*
-		if (ImGui::Begin("Object Properties"))
-		{
-			ImGui::Text("Transform");
-			ImGui::InputFloat3("Position", glm::value_ptr(meshPosition));
-			ImGui::InputFloat3("Rotation", glm::value_ptr(meshRotation));
-			ImGui::InputFloat3("Scale", glm::value_ptr(meshScale));
-
-			// ImGui::Separator();
-			//
-			// ImGui::Text("Material");
-			// if (ImGui::Button("Reload Shaders"))
-			// {
-			// 	LOG_WARN("Reloading Shaders!");
-			// 	LOG_ERROR("Shader Reloading not implemented yet.");
-			// }
-		}
-		ImGui::End();
-		*/
 
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImVec2 window_pos = ImVec2(viewport->Pos.x + 10.0f, viewport->Pos.y + 10.0f);

@@ -7,10 +7,14 @@
 class Shader
 {
 public:
-	Shader();
+	Shader() = default;
+	~Shader();
 
 	void Bind();
 
+	void Reload();
+
+	// Do we really need the ability to initialize from source strings?
 	void InitFromSource(const std::string& vertexSrc, const std::string& fragmentSrc);
 	void InitFromFile(const std::string& vertexFile, const std::string& fragmentFile);
 
@@ -26,7 +30,7 @@ public:
 
 private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
-	void CreateProgram(unsigned int vertexShader, unsigned int fragmentShader);
+	unsigned int CreateProgram(unsigned int vertexShader, unsigned int fragmentShader);
 
 	std::string ReadFile(const std::string& path);
 
@@ -35,6 +39,9 @@ private:
 private:
 	unsigned int m_ProgramId;
 	bool m_bInitialized = false;
+
+	bool m_bFromFile;
+	std::pair<std::string, std::string> m_ShaderSources; // Holds the file paths of the shader sources. Needed for hot-reload
 
 	// Shader Uniform Location Cache.
 	// glGetUniformLocation is a pretty costly operation, so we cache the shader uniform locations
