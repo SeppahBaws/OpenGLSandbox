@@ -8,6 +8,8 @@ public:
 
 	void Update();
 
+	inline glm::vec3 GetPosition() const { return m_Position; }
+
 private:
 	std::shared_ptr<Camera> m_pCamera;
 

@@ -76,7 +76,8 @@ void Application::Run()
 
 	// Model Test
 	//============
-	std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
+	// std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
+	std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/default-shapes/uv-sphere.fbx");
 	glm::vec3 modelPosition = glm::vec3(0.0f);
 	glm::vec3 modelRotation = glm::vec3(0.0f);
 	glm::vec3 modelScale = glm::vec3(1.0f);
@@ -98,7 +99,7 @@ void Application::Run()
 	// Shaders
 	//========
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
-	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
+	pShader->InitFromFile("assets/shaders/PBR.vert", "assets/shaders/PBR.frag");
 
 	// Camera
 	//=======
@@ -122,12 +123,14 @@ void Application::Run()
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 
-		pShader->SetUniformInt("albedoMap", 0);
-		pShader->SetUniformInt("normalMap", 1);
-		pShader->SetUniformInt("roughnessMap", 2);
-		pShader->SetUniformInt("metallicMap", 3);
-		pShader->SetUniformInt("ambientMap", 4);
-		
+		pShader->SetUniformInt("u_AlbedoMap", 0);
+		pShader->SetUniformInt("u_NormalMap", 1);
+		pShader->SetUniformInt("u_RoughnessMap", 2);
+		pShader->SetUniformInt("u_MetallicMap", 3);
+		pShader->SetUniformInt("u_AOMap", 4);
+
+		pShader->SetUniformFloat3("u_ViewPos", pCameraController->GetPosition());
+
 		// Draw Pistol
 		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
 			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
@@ -152,7 +155,7 @@ void Application::Run()
 			ImGui::SliderInt("Point size", &pointSize, 1, 10);
 		}
 		ImGui::End();
-		glPolygonMode(GL_FRONT_AND_BACK, renderMode);
+		glPolygonMode(GL_FRONT_AND_BACK, renderMode); // TODO: enable backface-culling
 		glPointSize(float(pointSize));
 		glLineWidth(float(lineWidth));
 
