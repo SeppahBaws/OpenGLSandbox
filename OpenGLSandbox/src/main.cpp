@@ -2,7 +2,7 @@
 // ReSharper Disable Once CppUnusedIncludeDirective
 #include <vld.h>
 
-#include "Application.h"
+#include "src/Core/Application.h"
 
 int main()
 {

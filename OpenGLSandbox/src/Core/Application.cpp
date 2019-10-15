@@ -4,15 +4,15 @@
 #include <chrono>
 
 #include "Window.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Mesh.h"
+#include "src/Renderer/Renderer.h"
+#include "src/Renderer/Shader.h"
+#include "src/Renderer/Texture.h"
+#include "src/Renderer/Mesh.h"
 #include "Time.h"
 #include "Input.h"
-#include "Camera.h"
-#include "CameraController.h"
-#include "Model.h"
+#include "src/Renderer/Camera.h"
+#include "src/Renderer/CameraController.h"
+#include "src/Renderer/Model.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

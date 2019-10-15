@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "CameraController.h"
 
-#include "Input.h"
-#include "Time.h"
+#include "src/Core/Input.h"
+#include "src/Core/Time.h"
 
 CameraController::CameraController(std::shared_ptr<Camera> pCamera)
 	: m_pCamera(pCamera), m_Position({ 0.0f, 0.0f, 3.0f }), m_MoveSpeed(3.0f)

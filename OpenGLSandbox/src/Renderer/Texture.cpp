@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Texture.h"
 
-#include "../dependencies/stb_image/stb_image.h"
+#include "dependencies/stb_image/stb_image.h"
 #include <glad/glad.h>
 
 Texture::Texture(const std::string& path)

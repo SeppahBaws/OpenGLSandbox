@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "Window.h"
 
-#include "RenderContext.h"
-#include "Renderer.h"
+#include "src/Renderer/RenderContext.h"
+#include "src/Renderer/Renderer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "Camera.h"
 
-#include "Input.h"
-#include "Time.h"
+#include "src/Core/Input.h"
+#include "src/Core/Time.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

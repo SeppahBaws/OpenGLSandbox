@@ -138,20 +138,20 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\CameraController.cpp" />
+    <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\CameraController.cpp" />
     <ClCompile Include="src\helpers\Logger.cpp" />
-    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\Model.cpp" />
-    <ClCompile Include="src\RenderContext.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\Time.cpp" />
-    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\Model.cpp" />
+    <ClCompile Include="src\Renderer\RenderContext.cpp" />
+    <ClCompile Include="src\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Core\Time.cpp" />
+    <ClCompile Include="src\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\imgui\imconfig.h" />
@@ -164,22 +164,22 @@
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\CameraController.h" />
+    <ClInclude Include="src\Core\Application.h" />
+    <ClInclude Include="src\Renderer\Camera.h" />
+    <ClInclude Include="src\Renderer\CameraController.h" />
     <ClInclude Include="src\helpers\Assert.h" />
     <ClInclude Include="src\helpers\Logger.h" />
-    <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\InputCodes.h" />
-    <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\Model.h" />
-    <ClInclude Include="src\RenderContext.h" />
-    <ClInclude Include="src\Renderer.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Singleton.h" />
-    <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\Time.h" />
-    <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Core\InputCodes.h" />
+    <ClInclude Include="src\Renderer\Mesh.h" />
+    <ClInclude Include="src\Renderer\Model.h" />
+    <ClInclude Include="src\Renderer\RenderContext.h" />
+    <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\Shader.h" />
+    <ClInclude Include="src\helpers\Singleton.h" />
+    <ClInclude Include="src\Renderer\Texture.h" />
+    <ClInclude Include="src\Core\Time.h" />
+    <ClInclude Include="src\Core\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
