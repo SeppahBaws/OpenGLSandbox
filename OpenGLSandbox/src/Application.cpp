@@ -84,7 +84,16 @@ void Application::Run()
 	// Textures
 	//=========
 	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
+	Texture pistolNormal("assets/models/drakefire-pistol/textures/base_normal.jpg");
 	Texture pistolRoughness("assets/models/drakefire-pistol/textures/base_roughness.jpg");
+	Texture pistolMetallic("assets/models/drakefire-pistol/textures/base_metallic.jpg");
+	Texture pistolAO("assets/models/drakefire-pistol/textures/base_AO.jpg");
+
+	pistolAlbedo.Bind(0);
+	pistolNormal.Bind(1);
+	pistolRoughness.Bind(2);
+	pistolMetallic.Bind(3);
+	pistolAO.Bind(4);
 	
 	// Shaders
 	//========
@@ -113,12 +122,13 @@ void Application::Run()
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 
-		pShader->SetUniformInt("albedo", 0);
-		pShader->SetUniformInt("roughness", 1);
+		pShader->SetUniformInt("albedoMap", 0);
+		pShader->SetUniformInt("normalMap", 1);
+		pShader->SetUniformInt("roughnessMap", 2);
+		pShader->SetUniformInt("metallicMap", 3);
+		pShader->SetUniformInt("ambientMap", 4);
 		
 		// Draw Pistol
-		pistolAlbedo.Bind(0);
-		pistolRoughness.Bind(1);
 		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
 			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
 			glm::scale(glm::mat4(1.0f), modelScale));
