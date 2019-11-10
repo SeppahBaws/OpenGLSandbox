@@ -1,0 +1,46 @@
+#pragma version 460 core
+
+#region parameters
+	uniform bool u_DoAmbient;
+	uniform vec3 u_Color;
+	uniform float u_Ambient;
+#endregion
+
+#shader vertex
+	layout(location = 0) in vec3 a_Position;
+	layout(location = 1) in vec3 a_Normal;
+	layout(location = 2) in vec2 a_TexCoord;
+
+	uniform mat4 u_Model;
+	uniform mat4 u_ViewProjection;
+
+	out vec3 v_Normal;
+	out vec2 v_TexCoord;
+
+	void main()
+	{
+		v_Normal = a_Normal;
+		v_TexCoord = a_TexCoord;
+
+		gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);
+	}
+#endshader
+
+#shader fragment
+	layout(location = 0) out vec4 fragColor;
+
+	in vec3 v_Normal;
+	in vec2 v_TexCoord;
+
+	void main()
+	{
+		vec3 finalColor = u_Color;
+		
+		if (u_DoAmbient)
+		{
+			finalColor *= u_Ambient;
+		}
+
+		fragColor = vec4(finalColor, 1.0);
+	}
+#endshader

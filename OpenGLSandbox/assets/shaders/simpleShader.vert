@@ -11,7 +11,7 @@ out vec2 v_TexCoord;
 
 void main()
 {
-	v_Normal = a_Normal;
+    v_Normal = a_Normal;
     v_TexCoord = a_TexCoord;
 
     gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);

@@ -7,11 +7,11 @@
 #include "src/Renderer/Renderer.h"
 #include "src/Renderer/Shader.h"
 #include "src/Renderer/Texture.h"
-#include "src/Renderer/Mesh.h"
 #include "Time.h"
 #include "Input.h"
 #include "src/Renderer/Camera.h"
 #include "src/Renderer/CameraController.h"
+#include "src/Renderer/Material.h"
 #include "src/Renderer/Model.h"
 
 #include <glad/glad.h>
@@ -98,7 +98,8 @@ void Application::Run()
 	// Shaders
 	//========
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
-	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
+	pShader->InitFromFile("assets/shaders/simpleShader.glshader");
+	std::shared_ptr<Material> pMaterial = std::make_shared<Material>(pShader);
 
 	// Camera
 	//=======
@@ -129,7 +130,7 @@ void Application::Run()
 		pShader->SetUniformInt("ambientMap", 4);
 		
 		// Draw Pistol
-		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
+		Renderer::Render(pModel, pMaterial, glm::translate(glm::mat4(1.0f), modelPosition) *
 			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
 			glm::scale(glm::mat4(1.0f), modelScale));
 
@@ -169,8 +170,11 @@ void Application::Run()
 			if (ImGui::Button("Reload Shader"))
 			{
 				LOG_WARN("Reloading Shaders...");
-				pShader->Reload();
+				// pShader->Reload();
+				pMaterial->ReloadShader();
 			}
+
+			pMaterial->RenderUniformsImGui();
 		}
 		ImGui::End();
 

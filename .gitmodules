@@ -1,0 +1,3 @@
+[submodule "vendor/OpenGLSandboxShaderParser"]
+	path = vendor/OpenGLSandboxShaderParser
+	url = https://github.com/SeppahBaws/OpenGLSandboxShaderParser.git
