@@ -14,6 +14,8 @@
 #include "src/Renderer/CameraController.h"
 #include "src/Renderer/Model.h"
 
+#include "src/Core/Scene/Scene.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -26,7 +28,14 @@
 
 Application::Application()
 	: m_pWindow(nullptr)
+	, m_pScene(nullptr)
 {
+	Initialize();
+}
+
+void Application::UseScene(Scene* pScene)
+{
+	m_pScene = pScene;
 }
 
 void Application::Initialize()
@@ -71,34 +80,32 @@ void Application::Initialize()
 void Application::Run()
 {
 	auto t = Time::GetTimePoint();
-	
-	Initialize();
 
 	// Model Test
 	//============
-	std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
-	glm::vec3 modelPosition = glm::vec3(0.0f);
-	glm::vec3 modelRotation = glm::vec3(0.0f);
-	glm::vec3 modelScale = glm::vec3(1.0f);
+	// std::shared_ptr<Model> pModel = std::make_shared<Model>("assets/models/drakefire-pistol/drakefire_pistol_low.obj");
+	// glm::vec3 modelPosition = glm::vec3(0.0f);
+	// glm::vec3 modelRotation = glm::vec3(0.0f);
+	// glm::vec3 modelScale = glm::vec3(1.0f);
 
 	// Textures
 	//=========
-	Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
-	Texture pistolNormal("assets/models/drakefire-pistol/textures/base_normal.jpg");
-	Texture pistolRoughness("assets/models/drakefire-pistol/textures/base_roughness.jpg");
-	Texture pistolMetallic("assets/models/drakefire-pistol/textures/base_metallic.jpg");
-	Texture pistolAO("assets/models/drakefire-pistol/textures/base_AO.jpg");
+	// Texture pistolAlbedo("assets/models/drakefire-pistol/textures/base_albedo.jpg");
+	// Texture pistolNormal("assets/models/drakefire-pistol/textures/base_normal.jpg");
+	// Texture pistolRoughness("assets/models/drakefire-pistol/textures/base_roughness.jpg");
+	// Texture pistolMetallic("assets/models/drakefire-pistol/textures/base_metallic.jpg");
+	// Texture pistolAO("assets/models/drakefire-pistol/textures/base_AO.jpg");
 
-	pistolAlbedo.Bind(0);
-	pistolNormal.Bind(1);
-	pistolRoughness.Bind(2);
-	pistolMetallic.Bind(3);
-	pistolAO.Bind(4);
+	// pistolAlbedo.Bind(0);
+	// pistolNormal.Bind(1);
+	// pistolRoughness.Bind(2);
+	// pistolMetallic.Bind(3);
+	// pistolAO.Bind(4);
 	
 	// Shaders
 	//========
-	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
-	pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
+	// std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
+	// pShader->InitFromFile("assets/shaders/simpleShader.vert", "assets/shaders/simpleShader.frag");
 
 	// Camera
 	//=======
@@ -122,16 +129,19 @@ void Application::Run()
 		Renderer::BeginScene(pCamera);
 		Renderer::Clear(0.2f, 0.3f, 0.8f, 1.0f);
 
-		pShader->SetUniformInt("albedoMap", 0);
-		pShader->SetUniformInt("normalMap", 1);
-		pShader->SetUniformInt("roughnessMap", 2);
-		pShader->SetUniformInt("metallicMap", 3);
-		pShader->SetUniformInt("ambientMap", 4);
+		// pShader->SetUniformInt("albedoMap", 0);
+		// pShader->SetUniformInt("normalMap", 1);
+		// pShader->SetUniformInt("roughnessMap", 2);
+		// pShader->SetUniformInt("metallicMap", 3);
+		// pShader->SetUniformInt("ambientMap", 4);
 		
 		// Draw Pistol
-		Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
-			glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
-			glm::scale(glm::mat4(1.0f), modelScale));
+		// Renderer::Render(pModel, pShader, glm::translate(glm::mat4(1.0f), modelPosition) *
+		// 	glm::orientate4(glm::vec3(glm::radians(modelRotation))) *
+		// 	glm::scale(glm::mat4(1.0f), modelScale));
+
+		// Render game scene
+		m_pScene->Render();
 
 		ImGui::ShowDemoWindow();
 
@@ -156,23 +166,23 @@ void Application::Run()
 		glPointSize(float(pointSize));
 		glLineWidth(float(lineWidth));
 
-		if (ImGui::Begin("Custom Model Properties"))
-		{
-			ImGui::Text("Transform");
-			ImGui::InputFloat3("Position", glm::value_ptr(modelPosition));
-			ImGui::InputFloat3("Rotation", glm::value_ptr(modelRotation));
-			ImGui::InputFloat3("Scale", glm::value_ptr(modelScale));
-
-			ImGui::Separator();
-
-			ImGui::Text("Material");
-			if (ImGui::Button("Reload Shader"))
-			{
-				LOG_WARN("Reloading Shaders...");
-				pShader->Reload();
-			}
-		}
-		ImGui::End();
+		// if (ImGui::Begin("Custom Model Properties"))
+		// {
+		// 	ImGui::Text("Transform");
+		// 	ImGui::InputFloat3("Position", glm::value_ptr(modelPosition));
+		// 	ImGui::InputFloat3("Rotation", glm::value_ptr(modelRotation));
+		// 	ImGui::InputFloat3("Scale", glm::value_ptr(modelScale));
+		//
+		// 	ImGui::Separator();
+		//
+		// 	ImGui::Text("Material");
+		// 	if (ImGui::Button("Reload Shader"))
+		// 	{
+		// 		LOG_WARN("Reloading Shaders...");
+		// 		pShader->Reload();
+		// 	}
+		// }
+		// ImGui::End();
 
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImVec2 window_pos = ImVec2(viewport->Pos.x + 10.0f, viewport->Pos.y + 10.0f);
@@ -220,6 +230,9 @@ void Application::OnError(int error, const char* errorMsg)
 
 void Application::Cleanup()
 {
+	m_pScene->Cleanup();
+	delete m_pScene;
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

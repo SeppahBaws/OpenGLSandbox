@@ -1,12 +1,14 @@
 ﻿#pragma once
 
+class Scene;
 class Window;
 
 class Application
 {
 public:
 	Application();
-	
+
+	void UseScene(Scene* pScene);
 	void Run();
 
 public:
@@ -18,6 +20,7 @@ private:
 
 private:
 	Window* m_pWindow;
+	Scene* m_pScene;
 
 	const int m_MsPerFrame = 16; // hard-lock to 60 fps
 };

@@ -139,6 +139,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Core\Scene\Actor.cpp" />
+    <ClCompile Include="src\Core\Scene\Components\BaseComponent.cpp" />
+    <ClCompile Include="src\Core\Scene\Components\ModelComponent.cpp" />
+    <ClCompile Include="src\Core\Scene\Scene.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\CameraController.cpp" />
     <ClCompile Include="src\helpers\Logger.cpp" />
@@ -165,6 +169,10 @@
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="src\Core\Application.h" />
+    <ClInclude Include="src\Core\Scene\Actor.h" />
+    <ClInclude Include="src\Core\Scene\Components\BaseComponent.h" />
+    <ClInclude Include="src\Core\Scene\Components\ModelComponent.h" />
+    <ClInclude Include="src\Core\Scene\Scene.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\CameraController.h" />
     <ClInclude Include="src\helpers\Assert.h" />
